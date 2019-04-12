@@ -1,9 +1,14 @@
 import java.util.ArrayList;
-public class HuffmanForest {
+public class HuffmanForest implements Cloneable{
 	private ArrayList<Noeud> foret;
 	
 	public HuffmanForest(ArrayList<Noeud> foret) {
 		this.foret = foret;
+	}
+	@Override
+	
+	public HuffmanForest clone() throws CloneNotSupportedException {
+		return (HuffmanForest) super.clone();
 	}
 	
 	public ArrayList<Noeud> getForet() {
@@ -37,7 +42,8 @@ public class HuffmanForest {
 		this.foret.remove(resMax);
 		int newValue = resMin.getVal() + resMax.getVal();
 		Noeud nouveauNoeud = new Noeud(newValue, resMax,resMin);
-		
+		resMax.setPere(nouveauNoeud);
+		resMin.setPere(nouveauNoeud);
 		this.foret.add(nouveauNoeud);
 		
 	}

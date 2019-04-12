@@ -10,88 +10,81 @@ public class Main {
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
 		// The name of the file to open.
-		ArrayList<String[]> al = new ArrayList<String[]>();
-        String fileName = "freq.dat";
-        try {
-		BufferedReader br = new BufferedReader(new FileReader("freq.dat"));
-		String line;
-		
-		while ((line = br.readLine()) != null) {
-		   // process the line.
-			if (line.length()>1){
-				String[] newLine= line.split(" ");
-				al.add(newLine);
-				
-			}
-			   
-			
-		}
-		
-			
-		
-		br.close();
-        }
-        catch (Exception e){
-			System.out.println(e.toString());
-			}
-     // boucle pour lire le tableau de tableau de string
-    	/*
-        for (int i =0; i< al.size();i++) {
-			System.out.println("a la ligne" + i);
-			for(String j : al.get(i)) {
-				
-				System.out.println(j);        	
-	        }
-			
-    	}
-    	*/
+	
         
-		/*try{
-			InputStream flux=new FileInputStream("freq.dat"); 
-			InputStreamReader lecture=new InputStreamReader(flux);
-			BufferedReader buff=new BufferedReader(lecture);
-			String ligne;
-			while ((ligne=buff.readLine())!=null){
-				System.out.println(ligne);
-			}
-			buff.close(); 
-			}	
-			catch (Exception e){
-			System.out.println(e.toString());
-			}
-	*/
-     
-        System.out.println(al.get(0)[1] instanceof String);
+        LectureData reader = new LectureData("freq.dat");
+        ArrayList<String[]> dataList = reader.arrayListValue();
+        
+        LectureData reader2 = new LectureData("example.txt");
+        ArrayList<String[]> test =reader2.dicoText();
+        
+     // Creation des feuilles
+                
         ArrayList<Noeud> nodeList = new ArrayList<Noeud>();
-        
-// Creation des feuilles
-      
-         for (int i =0; i< al.size();i++) {
+        for (int i =0; i< test.size();i++) {
         	
-        	Noeud leNode = new Noeud(al.get(i)[0],Integer.parseInt( al.get(i)[1]));
-        	nodeList.add(leNode);
-        		
-        	
+        	Noeud leNode = new Noeud(test.get(i)[0],Integer.parseInt( test.get(i)[1]));
+        	nodeList.add(leNode);	
         }
+        System.out.println(nodeList.size());
+        System.out.println(test.size());
+        
         /* ------------- Tests ---------------------------
         System.out.println(nodeList.size());
         for (int i =0; i<nodeList.size();i++) {
         	System.out.println(nodeList.get(i).getLettre());
         	System.out.println(nodeList.get(i).getVal());
         }
+        
+  /*      ArrayList<Noeud> nodeListExec = new ArrayList<Noeud>();
+        // copie les même noeud et pas une copie de noeud 
+        
         */
-        int i = 0;
-        HuffmanForest hF = new HuffmanForest(nodeList);
-        while (hF.getForet().size()>1){
-        	hF.remakeForest();
-        System.out.println(hF.getForet().size());
-        }
-        
-       System.out.println(hF.getForet().get(0).getGauche().isLeaf());
+       ArrayList<Noeud> nodeListExec = new ArrayList<Noeud>();
        
-       String path = hF.getForet().get(0).deepPath("", "B");
-       System.out.println(path);
+      /* for (int j = 0 ; j<nodeList.size();j++) {
+         	nodeListExec.add(nodeList.get(j).clone());
+         }*/
+      
+       HuffmanForest hF = new HuffmanForest(nodeListExec);
        
+      /* while (hF.getForet().size()>1){
+          	hF.remakeForest();
+          System.out.println(hF.getForet().size());
+          }
+       System.out.println( hF.getForet().get(0).deepPath("", "n"));
+       
+       
+       */
+       
+       
+      // marche sauf pour E 
+       for (int i = 0; i<test.size();i++) {
+    	   
+    	   nodeListExec.clear();
+    	   for (int j = 0 ; j<nodeList.size();j++) {
+           	nodeListExec.add(nodeList.get(j).clone());
+           }
+    	   
+    	   hF = new HuffmanForest(nodeListExec);
+           while (hF.getForet().size()>1){
+           	hF.remakeForest();
+          // System.out.println(hF.getForet().size());
+           }
+           System.out.println(test.get(i)[0] + " : "+  hF.getForet().get(0).deepPath("", test.get(i)[0]));
         
-	}
+    	   
+    	   
+       }
+       
+       /*LectureData reader2 = new LectureData("example.txt");
+       ArrayList<String[]> test =reader2.dicoText();
+       System.out.println(test.size());
+       
+       for (int i =0; i < test.size();i++) {
+    	   System.out.println(test.get(i)[0]+" : " + test.get(i)[1]);
+    	   
+       }
+   */
+}
 }
